@@ -1,0 +1,85 @@
+@baseUrl = https://localhost:7271
+@cityId = 1
+@pointOfInterestId = 1
+
+### Get swagger
+GET {{baseUrl}}/openapi/v1.json
+Accept: application/json
+
+### Get all cities
+GET {{baseUrl}}/api/cities
+Accept: application/json
+
+### Get all cities (XML)
+GET {{baseUrl}}/api/cities
+Accept: application/xml
+
+### Get specific city
+GET {{baseUrl}}/api/cities/{{cityId}}
+Accept: application/json
+
+### Get specific city with POI
+GET {{baseUrl}}/api/cities/{{cityId}}?includePointsOfInterest=true
+Accept: application/json
+
+### Create new city
+POST {{baseUrl}}/api/cities
+Content-Type: application/json
+
+{
+  "name": "New City",
+  "description": "This is a new city"
+}
+
+### Filter City by name
+GET {{baseUrl}}/api/cities?name=Antwerp
+Accept: application/json
+
+### Search cities
+GET {{baseUrl}}/api/cities?searchQuery=park
+Accept: application/json
+
+###
+### Point of interest
+###
+
+### Get all point of interests
+GET {{baseUrl}}/api/cities/{{cityId}}/pointsofinterest
+Accept: application/json
+
+### Get specific point of interest
+GET {{baseUrl}}/api/cities/{{cityId}}/pointsofinterest/{{pointOfInterestId}}
+Accept: application/json
+
+### Create new point of interest
+POST {{baseUrl}}/api/cities/{{cityId}}/pointsofinterest
+Content-Type: application/json
+
+{
+  "name": "New Attraction",
+  "description": "This is a new attraction"
+}
+
+### Delete point of interest
+DELETE {{baseUrl}}/api/cities/{{cityId}}/pointsofinterest/{{pointOfInterestId}}
+
+### Update point of interest
+PUT {{baseUrl}}/api/cities/{{cityId}}/pointsofinterest/{{pointOfInterestId}}
+Content-Type: application/json
+
+{
+  "name": "Updated Attraction",
+  "description": "This is an updated attraction"
+}
+
+### Partially update point of interest (PATCH with JSON Patch)
+PATCH {{baseUrl}}/api/cities/{{cityId}}/pointsofinterest/{{pointOfInterestId}}
+Content-Type: application/json-patch+json
+
+[
+  {
+    "op": "replace",
+    "path": "/name",
+    "value": "Patched Name"
+  }
+]
