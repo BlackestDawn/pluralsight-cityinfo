@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,15 +25,23 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   public async Task<IActionResult> GetPointsOfInterest(int cityId,
     CancellationToken cancellationToken = default)
   {
-    if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
+    try
     {
-      logger.LogInformation($"City with id {cityId} not found when accessing point of interest.");
-      return NotFound();
+      if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
+      {
+        logger.LogInformation("City with id {cityId} not found when accessing point of interest.", cityId);
+        return NotFound();
+      }
+
+      var pointsOfInterest = await cityInfoRepository.GetPointsOfInterestForCityAsync(cityId, cancellationToken);
+
+      return Ok(mapper.Map<IEnumerable<PointOfInterestDto>>(pointsOfInterest));
     }
-
-    var pointsOfInterest = await cityInfoRepository.GetPointsOfInterestForCityAsync(cityId, cancellationToken);
-
-    return Ok(mapper.Map<IEnumerable<PointOfInterestDto>>(pointsOfInterest));
+    catch (Exception ex)
+    {
+      logger.LogCritical(ex, "Exception while getting points of interest for city with id {cityId}.", cityId);
+      return StatusCode(500, "A problem occured while handling your request.");
+    }
   }
 
   [HttpGet("{pointOfInterestId}", Name = "GetPointOfInterest")]
@@ -41,7 +50,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"City with id {cityId} not found when accessing point of interest.");
+      logger.LogInformation("City with id {cityId} not found when accessing point of interest.", cityId);
       return NotFound();
     }
 
@@ -79,7 +88,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"Could not remove POI for non-existent city with id {cityId}.");
+      logger.LogInformation("Could not remove POI for non-existent city with id {cityId}.", cityId);
       return NotFound();
     }
 
@@ -104,7 +113,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"Could not update POI for non-existent city with id {cityId}.");
+      logger.LogInformation("Could not update POI for non-existent city with id {cityId}.", cityId);
       return NotFound();
     }
 
@@ -126,7 +135,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"Could not update POI for non-existent city with id {cityId}.");
+      logger.LogInformation("Could not update POI for non-existent city with id {cityId}.", cityId);
       return NotFound();
     }
 
