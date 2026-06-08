@@ -41,6 +41,11 @@ builder.Services.AddAutoMapper(config => { },
 
 var app = builder.Build();
 
+if (!app.Environment.IsDevelopment())
+{
+  app.UseExceptionHandler();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
