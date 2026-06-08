@@ -26,7 +26,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"City with id {cityId} not found when accessing point of interest.");
+      logger.LogInformation("City with id {cityId} not found when accessing point of interest.", cityId);
       return NotFound();
     }
 
@@ -41,7 +41,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"City with id {cityId} not found when accessing point of interest.");
+      logger.LogInformation("City with id {cityId} not found when accessing point of interest.", cityId);
       return NotFound();
     }
 
@@ -79,7 +79,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"Could not remove POI for non-existent city with id {cityId}.");
+      logger.LogInformation("Could not remove POI for non-existent city with id {cityId}.", cityId);
       return NotFound();
     }
 
@@ -104,7 +104,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"Could not update POI for non-existent city with id {cityId}.");
+      logger.LogInformation("Could not update POI for non-existent city with id {cityId}.", cityId);
       return NotFound();
     }
 
@@ -126,7 +126,7 @@ public class PointsOfInterestController(ILogger<PointsOfInterestController> logg
   {
     if (!await cityInfoRepository.CityExistsAsync(cityId, cancellationToken))
     {
-      logger.LogInformation($"Could not update POI for non-existent city with id {cityId}.");
+      logger.LogInformation("Could not update POI for non-existent city with id {cityId}.", cityId);
       return NotFound();
     }
 
